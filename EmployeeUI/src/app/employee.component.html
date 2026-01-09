@@ -1,0 +1,49 @@
+
+<div class="header-section">
+    <h2>Employee Management</h2>
+    <button class="btn btn-create" (click)="openCreateForm()" *ngIf="!showForm">
+        + Add New Employee
+    </button>
+</div>
+
+<div class="success" *ngIf="successMessage">{{successMessage}}</div>
+<div class="loading" *ngIf="isLoading">Loading...</div>
+<div class="error" *ngIf="error">Error: {{error}}</div>
+
+<app-employee-form
+    *ngIf="showForm"
+    [employee]="selectedEmployee"
+    [isEdit]="isEditMode"
+    (formSubmit)="onFormSubmit($event)"
+    (formCancel)="closeForm()">
+</app-employee-form>
+
+<div class="table-container" *ngIf="!showForm">
+    <table *ngIf="!isLoading && !error">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let emp of employees">
+                <td>{{emp.name}}</td>
+                <td>{{emp.position}}</td>
+                <td>{{emp.department}}</td>
+                <td>{{emp.salary | currency}}</td>
+                <td class="actions">
+                    <button class="btn-action btn-edit" (click)="openEditForm(emp)" title="Edit">
+                        ✏️
+                    </button>
+                    <button class="btn-action btn-delete" (click)="deleteEmployee(emp.id!)" title="Delete">
+                        🗑️
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
